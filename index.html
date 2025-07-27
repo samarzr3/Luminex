@@ -52,24 +52,33 @@
           <p class="header-action-label">Search</p>
         </button>
 
-        <button class="header-action-btn">
+        <button class="header-action-btn" id="cartBtn">
           <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
 
-          <p class="header-action-label">Cart</p>
+          <p class="header-action-label">Cart </p>
 
-          <div class="btn-badge green" aria-hidden="true">3</div>
+            <div class="btn-badge green" aria-hidden="true" id="cart-count">0</div>
         </button>
 
-        <button class="header-action-btn">
-          <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
-
-          <p class="header-action-label">Wishlisht</p>
-
-          <div class="btn-badge" aria-hidden="true">2</div>
-        </button>
-
+       <button id="wishlistBtn" class="header-action-btn">
+  <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+  <p class="header-action-label">Wishlist</p>
+  <div id="wishlistCount" class="btn-badge" aria-hidden="true">0</div>
+</button>
+<div id="wishlistDropdown" class="wishlist-dropdown" style="display:none; position:absolute; top:50px; right:20px; background:#fff; border:1px solid #ccc; width:300px; max-height:400px; overflow-y:auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index:1000; padding:10px;">
+  <h4>My Wishlist</h4>
+  <ul id="wishlistItems" style="list-style:none; padding:0; margin:0;"></ul>
+  <button id="closeWishlist" style="margin-top:10px; padding:5px 10px;">Close</button>
+</div>
       </div>
-
+<div class="cart-popup" id="cartPopup" style="display: none;">
+  <div class="cart-content">
+    <h3>Your Cart 🛒</h3>
+    <ul id="cartItems"></ul>
+    <p id="cartTotal"></p>
+    <button id="closeCart">Close</button>
+  </div>
+</div>
       <button class="nav-open-btn" data-nav-open-btn aria-label="Open Menu">
         <span></span>
         <span></span>

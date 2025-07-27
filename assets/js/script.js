@@ -494,3 +494,90 @@ function renderWishlistDropdown() {
     });
   });
 }
+
+let isSignupMode = false;
+
+const modal = document.getElementById("authModal");
+const openBtn = document.getElementById("signinBtn");
+const closeBtn = document.getElementById("closeModal");
+const confirmBtn = document.getElementById("authConfirmBtn");
+const switchMode = document.getElementById("switchMode");
+const modalTitle = document.getElementById("modalTitle");
+const toggleText = document.getElementById("toggleMode");
+
+openBtn.addEventListener("click", () => modal.style.display = "flex");
+closeBtn.addEventListener("click", () => modal.style.display = "none");
+
+
+switchMode.addEventListener("click", (e) => {
+  e.preventDefault();
+  isSignupMode = !isSignupMode;
+
+  modalTitle.textContent = isSignupMode ? "Create Account" : "Sign In";
+  toggleText.innerHTML = isSignupMode
+    ? 'Already have an account? <a href="#" id="switchMode">Sign In</a>'
+    : `Don't have an account? <a href="#" id="switchMode">Create one</a>`;
+
+
+  document.getElementById("switchMode").addEventListener("click", (e) => {
+    e.preventDefault();
+    switchMode.click();
+  });
+});
+
+// Save or Login
+confirmBtn.addEventListener("click", () => {
+  const username = document.getElementById("authUsername").value.trim();
+  const password = document.getElementById("authPassword").value.trim();
+
+  if (!username || !password) {
+    alert("Fill all fields");
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if (isSignupMode) {
+    if (users[username]) {
+      alert("Username already exists!");
+      return;
+    }
+    users[username] = password;
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("loggedInUser", username);
+    alert("Account created!");
+  } else {
+    if (!users[username] || users[username] !== password) {
+      alert("Invalid credentials");
+      return;
+    }
+    localStorage.setItem("loggedInUser", username);
+    alert("Welcome back!");
+  }
+
+  modal.style.display = "none";
+  updateUIOnLogin(username);
+});
+
+
+function updateUIOnLogin(username) {
+  const label = document.getElementById("signinBtn");
+  label.innerHTML = username;
+
+  const logoutBtn = document.createElement("span");
+  logoutBtn.textContent = " | Log out";
+  logoutBtn.style.cursor = "pointer";
+  logoutBtn.style.marginLeft = "10px";
+
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("loggedInUser");
+    location.reload();
+  });
+
+  label.appendChild(logoutBtn);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  if (loggedInUser) updateUIOnLogin(loggedInUser);
+});
